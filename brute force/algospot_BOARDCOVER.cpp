@@ -1,3 +1,9 @@
+/*
+21. 12. 11. 정기은
+알고스팟 문제 ID: BOARDCOVER 게임판 덮기 문제
+분류: 탐색
+*/
+
 #include <iostream>
 #include <string>
 #include <vector>

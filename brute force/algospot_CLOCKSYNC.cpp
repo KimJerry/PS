@@ -1,51 +1,52 @@
 #include <iostream>
 #include <vector>
+#include <algorithm>
 using namespace std;
 
-int clocks[16];
-int buttons[10][5] = {
-    {0, 1, 2, -1, -1},
-    {3, 7, 9, 11, -1},
-    {4, 10, 14, 15, -1},
-    {0, 4, 5, 6, 7},
-    {6, 7, 8, 10, 12},
-    {0, 2, 14, 15, -1},
-    {3, 14, 15, -1, -1},
-    {4, 5, 7, 14, 15},
-    {1, 2, 3, 4, 5},
-    {3, 4, 5, 9, 13}
+const int INF = 9999, SWITCHES = 10, CLOCKS = 16;
+
+const char linked[SWITCHES][CLOCKS + 1] = {
+    "xxx.............",
+    "...x...x.x.x....",
+    "....x.....x...xx",
+    "x...xxxx........",
+    "......xxx.x.x...",
+    "x.x...........xx",
+    "...x..........xx",
+    "....xx.x......xx",
+    ".xxxxx..........",
+    "...xxx...x...x.."
 };
 
-bool check[10];
-vector<int> res;
-vector<int> pickedClocks;
-int cnt = 0;
 
-void pushButton(int whichButton, int k) {
-    for(int i = 0; i < 5; i++) {
-        if(buttons[whichButton][k] == -1) continue;
-        clocks[buttons[whichButton][k]] = (clocks[buttons[whichButton][k]] + 3) % 12;
+
+// 모든 시계가 12시를 가리키고 있는지 확인한다.
+bool areAligned(const vector<int>& clocks) {
+    for(int i = 0; i < 16; i++) {
+        if(clocks[i] != 12) return false;
+    }
+    return true;
+}
+
+// swtch 번 스위치를 누른다.
+void push(vector<int>& clocks, int swtch) {
+    for(int clock = 0; clock < CLOCKS; ++clock) {
+        if(linked[swtch][clock] == 'x') {
+            clocks[clock] += 3;
+            if(clocks[clock] == 15) clocks[clock] = 3;
+        }
     }
 }
 
-void solve(vector<int>& picked) {
-    bool finished = true;
-    for(int i = 0; i < 16; i++) {
-        if(clocks[i] != 0) {
-            finished = false;
-            break;
-        }
-    }
-    if(finished) {
-        res.push_back(cnt);
-        cnt = 0;
-        return;
-    }
+int solve(vector<int>& clocks, int swtch) {
+    if(swtch == SWITCHES) return areAligned(clocks) ? 0 : INF;
 
-    // 고를 수 있는 제일 앞에 있는 시계.
-    int smallest = picked.empty() ? 0 : picked.back();
-    
-
+    int ret = INF;
+    for(int cnt = 0; cnt < 4; ++cnt) {
+        ret = min(ret, cnt + solve(clocks, swtch + 1));
+        push(clocks, swtch);
+    }
+    return ret;
 }
 
 int main() {
@@ -54,13 +55,15 @@ int main() {
     int C;
     cin >> C;
     while(C--) {
+        vector<int> arr;
         for(int i = 0; i < 16; i++) {
             int a;
             cin >> a;
-            clocks[i] = a % 12;
+            arr.push_back(a);
         }
-        solve();
-        
+        int res = solve(arr, 0);
+        res = res == INF ? -1 : res;
+        cout << res << '\n';
     }
     return 0;
 }
