@@ -43,7 +43,7 @@ int main() {
                 cin >> board[k][i][j];
                 if(board[k][i][j] == 1) {
                     vis[k][i][j] = true;
-                    Q.push({make_tuple(k, i, j)});
+                    Q.push(make_tuple(k, i, j));
                 }
             }
         }
