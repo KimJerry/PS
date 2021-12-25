@@ -1,35 +1,18 @@
 #include <iostream>
-#include <string>
-#include <stack>
 using namespace std;
 
+int N, S;
+int arr[20];
+int dfs(int i, int sum) {
+    if(i == N) return sum == S;
+    return dfs(i+1, sum) + dfs(i+1, sum+arr[i]);
+}
+
 int main() {
-    ios_base::sync_with_stdio(false);
-    cin.tie(nullptr);
-    string str;
-    while(getline(cin, str)) {
-        stack<char> S;
-        bool balanced = true;
-        if(str.compare(".") == 0) break;
-        for(int i = 0; i < str.size(); i++) {
-            if(str[i] == '(' || str[i] == '[') S.push(str[i]);
-            else if(str[i] == ')') {
-                if(S.empty() || S.top() != '(') {
-                    balanced = false;
-                    break;
-                }
-                S.pop();
-            }
-            else if(str[i] == ']') {
-                if(S.empty() || S.top() != '[') {
-                    balanced = false;
-                    break;
-                }
-                S.pop();
-            }
-        }
-        if(balanced && S.empty()) cout << "yes\n";
-        else cout << "no\n";
-    }
+    cin.tie(0)->sync_with_stdio(0);
+    cin >> N >> S;
+    for(int i = 0; i < N; i++) cin >> arr[i];
+    cout << dfs(0, 0) - !S;
+    cout << !5;
     return 0;
 }
