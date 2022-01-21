@@ -1,18 +1,25 @@
 #include <iostream>
+#include <string>
+#include <queue>
 using namespace std;
 
-int N, S;
-int arr[20];
-int dfs(int i, int sum) {
-    if(i == N) return sum == S;
-    return dfs(i+1, sum) + dfs(i+1, sum+arr[i]);
-}
+int L, N, M;
+int board[31][31][31];
 
 int main() {
     cin.tie(0)->sync_with_stdio(0);
-    cin >> N >> S;
-    for(int i = 0; i < N; i++) cin >> arr[i];
-    cout << dfs(0, 0) - !S;
-    cout << !5;
+    cin >> L >> N >> M;
+    //input
+    for(int i = 0; i < L; i++) {
+        for(int j = 0; j < N; j++) {
+            string arr;
+            cin >> arr;
+            for(int k = 0; k < M; k++) {
+                if(arr[k] == '#') board[i][j][k] = -1;
+                else if(arr[k] == 'S') board[i][j][k] = -2;
+
+            }
+        }
+    }
     return 0;
 }

@@ -1,35 +1,33 @@
 #include <iostream>
-#include <vector>
-#include <algorithm>
 using namespace std;
 
-int digit = 999999;
+char board[6666][6666];
+int dx[8] = {0, 1, 1, 1, 0, -1, -1, -1};
+int dy[8] = {-1, -1, 0, 1, 1, 1, 0, -1};
 
-void solve(int n) {
-    for(int i = 1; i <= 54; i++) {
-        int temp = n - i;
-        if(temp <= 0) return;
-        
-        int p = 1000000;
-        int res = temp;
-        while(temp != 0) {
-            res += temp / p;
-            temp %= p;
-            p /= 10;
-        }
-        if(res == n) {
-            digit = min(digit, res - i);
-        }
+void solve(int x1, int y1, int len) {
+    if(len == 1) {
+        board[x1][y1] = '*';
+        return;
+    }
+    for(int i = 0; i < 8; i++) {
+        int nx = dx[i]*len/3 + x1;
+        int ny = dy[i]*len/3 + y1;
+        solve(nx, ny, len/3);
     }
 }
 
 int main() {
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
+    cin.tie(0)->sync_with_stdio(false);
     int N;
     cin >> N;
-    solve(N);
-    if(digit == 999999) digit = 0;
-    cout << digit << endl;
+    solve(N/2, N/2, N);
+    for(int i = 0; i < N; i++) {
+        for(int j = 0; j < N; j++) {
+            if(board[i][j] != '*') cout << ' ';
+            else cout << '*';
+        }
+        cout << '\n';
+    }
     return 0;
 }
