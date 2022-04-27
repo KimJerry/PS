@@ -28,24 +28,18 @@ int solve()
         vector<pi> lessThanPos;
         for (int i = 0; i < flower.size(); i++)
         {
-            if (flower[i].second <= march || flower[i].first > november)
+            if (flower[i].second < march || flower[i].first > november)
                 continue;
-            if (flower[i].first <= pos && flower[i].second > pos)
+            if (flower[i].first <= pos)
                 lessThanPos.push_back(flower[i]);
-            else if (flower[i].first > pos)
+            else
             {
                 if (lessThanPos.size() == 0)
                     return 0;
                 break;
             }
         }
-        int max = 0;
-        for (int i = 0; i < lessThanPos.size(); i++)
-        {
-            if (lessThanPos[i].second > max)
-                max = lessThanPos[i].second;
-        }
-        pos = max;
+        pos = lessThanPos.back().second + 1;
         ans++;
     }
     return ans;
