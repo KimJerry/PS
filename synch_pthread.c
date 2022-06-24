@@ -55,7 +55,6 @@ void *thread_decrement(void *arg) {
     while (x == 0) {
       pthread_cond_wait(&fill, &m);
     }
-
     val = x;
     printf("%u:     %d\n", (unsigned int)pthread_self(), val);
     x = val - 1;

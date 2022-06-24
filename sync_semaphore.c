@@ -37,13 +37,13 @@ int main() {
 void *thread_increment(void *arg) {
   int i, val;
   for (i = 0; i < ITER; i++) {
-    // sem_wait(&empty);
+    sem_wait(&empty);
     sem_wait(&s);
     val = x;
     printf("%u:     %d\n", (unsigned int)pthread_self(), val);
     x = val + 1;
     sem_post(&s);
-    // sem_post(&fill);
+    sem_post(&fill);
   }
   pthread_exit(NULL);
 }
@@ -51,13 +51,13 @@ void *thread_increment(void *arg) {
 void *thread_decrement(void *arg) {
   int i, val;
   for (i = 0; i < ITER; i++) {
-    // sem_wait(&fill);
+    sem_wait(&fill);
     sem_wait(&s);
     val = x;
     printf("%u:     %d\n", (unsigned int)pthread_self(), val);
     x = val - 1;
     sem_post(&s);
-    // sem_post(&empty);
+    sem_post(&empty);
   }
   pthread_exit(NULL);
 }
